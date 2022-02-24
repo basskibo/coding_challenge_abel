@@ -1,0 +1,185 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Coding_challenge_Abel",
+		"_postman_id": "145896cf-377c-ff6e-075c-c349b99b7fbe",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "coach",
+			"description": "",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"url": "http://localhost:3000/api/coach",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"url": "http://localhost:3000/api/auth",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Og==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Bojan",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "lastName",
+									"value": "Jagetic",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "email",
+									"value": "aGAag@yahoo.com",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "password",
+									"value": "test1234",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "test1234",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "coach",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "client",
+			"description": "",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"url": "http://localhost:3000/api/client",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test",
+									"value": "key",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"description": "",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"url": "http://localhost:3000/api/auth",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Og==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Bojan",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "lastName",
+									"value": "Jagetic",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "email",
+									"value": "aGAag@yahoo.com",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "password",
+									"value": "test1234",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "test1234",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "coach",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

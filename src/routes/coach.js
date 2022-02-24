@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 // 	} catch (exc) {
 // 		// console.log("EXC!!!!")
 // 		// console.error(exc)
-// 		res.writeHead(exc.status || 500)
+// 		res.writeHead(exc.statusCode || 500)
 // 		res.end(exc.msg || "There was some internal error trying to register the coach")
 // 	}
 // })

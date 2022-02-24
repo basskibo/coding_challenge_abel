@@ -1,4 +1,5 @@
 const emailHandler = require("../utils/mailHandler"),
+	redisHandler = require("../utils/redisHandler"),
 	userModel = require("../models/user/model")
 
 /**
@@ -22,8 +23,16 @@ module.exports = {
 	 * @param {number} percent - The percentage, ranging from 0 to 100.
 	 * @return {string} The darkened color.
 	 */
-	login: (x, y) => {
-		console.log("THIS IS CONTROLLER TEST")
-		return "test"
+	login: async (data) => {
+		const { email, password } = data
+		let user = await userModel.loginUser(email, password)
+		console.log("user found ")
+		console.log(user)
+		const sessionKey = await redisHandler.storeSessionCredentials(user)
+		user = { ...user, session: sessionKey }
+		return user
+	},
+	findUserByEmail: async (email) => {
+		return await userModel.findUserByEmail(email)
 	},
 }

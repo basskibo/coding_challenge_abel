@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const config = require("../../config/config")
 
-const coachSchema = new Schema(
+const userSchema = new Schema(
 	{
 		firstName: {
 			type: String,
@@ -28,6 +28,8 @@ const coachSchema = new Schema(
 		password: {
 			type: String,
 			required: true,
+			min: config.validation.password.min,
+			max: config.validation.password.max,
 			unique: true,
 		},
 		role: {
@@ -58,14 +60,13 @@ const coachSchema = new Schema(
 /**
  * Password hash middleware called before saving user
  */
-coachSchema.pre("save", function save(next) {
+userSchema.pre("save", function save(next) {
 	const user = this
-	console.log("DESILO SE PRE SAVE >>>")
-	if (!user.isModified("password")) {
-		return next()
-	}
-	console.log("PASSWORD TREBA DA SE UPDATE")
-	bcrypt.genSalt(10, (err, salt) => {
+	const saltRounds = 10
+	// if (!user.isModified("password")) {
+	// 	return next()
+	// }
+	bcrypt.genSalt(saltRounds, (err, salt) => {
 		if (err) {
 			return next(err)
 		}
@@ -82,10 +83,10 @@ coachSchema.pre("save", function save(next) {
 /**
  * Helper method for validating user's password.
  */
-coachSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
 	return bcrypt.compareSync(candidatePassword, this.password)
 }
 
-const Coach = mongoose.model("Coach", coachSchema)
+const Coach = mongoose.model("Coach", userSchema)
 
-module.exports = coachSchema
+module.exports = userSchema

@@ -5,17 +5,22 @@ const config = require("../../config/config")
 
 const sessionSchema = new Schema(
 	{
-		firstName: {
+		user: {
 			type: String,
 			required: true,
 			default: "John",
 		},
-		lastName: {
+		coach: {
 			type: String,
 			required: true,
 			default: "Doe",
 		},
-		email: {
+		sessionLength: {
+			type: String,
+			required: true,
+			default: "Doe",
+		},
+		time: {
 			type: String,
 			unique: true,
 			required: true,

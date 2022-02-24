@@ -1,48 +1,23 @@
 const userSchema = require("./schema"),
 	config = require("../../config/config"),
+	bcrypt = require("bcrypt"),
 	helperMethod = require("../../utils/helperMethod")
 
 const mongoose = require("mongoose"),
 	validator = require("validator")
 const User = mongoose.model("User", userSchema)
-
-module.exports = {
+const isEmpty = (value) => {
+	value === undefined ||
+		value === null ||
+		(typeof value === "Object" && Object.keys(value).length === 0) ||
+		(typeof value === "string" && value.trim().length === 0)
+}
+const userModel = (module.exports = {
 	create: async (args) => {
-		let { email, firstName, lastName, password, confirmPassword, role } = args
-		console.log(
-			"Starting user registration !",
-			email,
-			firstName,
-			lastName,
-			password,
-			role
-		)
-		email = email.toLowerCase()
-		if (!validator.isEmail(email)) {
-			throw {
-				msg: "Please enter valid email, e.g. test@mail.com",
-				status: 400,
-			}
-		}
-		if (!validator.isLength(password, { min: 8 })) {
-			throw {
-				msg: "Password must be at least 8 characters long",
-				status: 400,
-			}
-		}
-		if (args.password !== confirmPassword) {
-			throw {
-				msg: "Passwords does not match",
-				status: 400,
-			}
-		}
-		if (!validator.isIn(role, config.validation.enumRoles)) {
-			throw {
-				msg: "Role is not valid, please select a valid role",
-				status: 404,
-			}
-		}
+		console.log("Register controller started!")
 		try {
+			let { email, firstName, lastName, password, confirmPassword, role } = args
+			email = email.toLowerCase()
 			email = validator.normalizeEmail(email, { gmail_remove_dots: false })
 
 			const user = new User({
@@ -54,15 +29,7 @@ module.exports = {
 				isActivated: config.automaticActivation ? config.automaticActivation : false,
 				activationToken: helperMethod._generateRandom(30),
 			})
-			const existingUser = await User.findOne({ email: email }).exec()
-			if (existingUser) {
-				throw {
-					msg: `Account with email ${email} already exists`,
-					status: 400,
-				}
-			}
 			const createdUser = await user.save()
-			console.log(createdUser)
 			console.log(`User ${firstName} ${lastName} has been successfully created !`)
 			return createdUser
 		} catch (exception) {
@@ -70,4 +37,41 @@ module.exports = {
 			throw exception
 		}
 	},
-}
+	/**
+	 * Login user.
+	 */
+	loginUser: async (email, password) => {
+		email = email.toLowerCase()
+		let user = await userModel.findUserByEmail(email)
+		if (!user) {
+			throw {
+				statusCode: 404,
+				msg: `User with email ${email} does not exist in database`,
+			}
+		} else if (!user.isActivated) {
+			throw {
+				statusCode: 400,
+				msg: `Your account is not activated. Please confirm your email`,
+			}
+		}
+
+		const passwordMatch = await bcrypt.compare(password, user.password)
+		console.log("RESULT : ", passwordMatch)
+		if (!passwordMatch) {
+			throw {
+				statusCode: 404,
+				msg: `Wrong password entered for user ${user.email}`,
+			}
+		}
+		const hash = await bcrypt.genSalt(15)
+		let userClone = { ...user }
+		const userWithHash = { ...user.toObject(), hash: hash } // mongoose results needs to be parsed to object
+		console.log(userWithHash)
+
+		return userWithHash
+	},
+	findUserByEmail: async (email) => {
+		const user = await User.findOne({ email: email }).exec()
+		return user
+	},
+})

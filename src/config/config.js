@@ -6,6 +6,10 @@ module.exports = {
 			min: 5,
 			max: 35,
 		},
+		password: {
+			min: 6,
+			max: 30,
+		},
 		activationTokenLength: 30,
 	},
 }
