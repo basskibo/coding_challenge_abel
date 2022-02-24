@@ -5,15 +5,15 @@ const config = require("../../config/config")
 
 const sessionSchema = new Schema(
 	{
-		user: {
-			type: String,
+		client: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
 			required: true,
-			default: "John",
 		},
 		coach: {
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref: "User",
 			required: true,
-			default: "Doe",
 		},
 		sessionLength: {
 			type: String,

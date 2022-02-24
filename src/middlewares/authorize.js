@@ -2,7 +2,6 @@
 const redisHandler = require("../utils/redisHandler")
 module.exports = async function isLoggedIn(req, res, next) {
 	// console.log("CHECKING RESTRICTED ROUTE!!", req.session.passport);
-	console.log("is authenticated?: " + JSON.stringify(req.headers.session))
 	try {
 		const sessionId = req.headers.session
 		if (!sessionId) {

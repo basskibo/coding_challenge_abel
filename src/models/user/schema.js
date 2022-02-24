@@ -46,13 +46,14 @@ const userSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		// passwordResetToken: String,
-		// passwordResetExpires: Date,
-		// emailVerificationToken: String,
-		// emailAndAccountVerified: {
-		//   type: Boolean,
-		//   default: false
-		// },
+		sessions: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Session",
+				required: false,
+				default: undefined,
+			},
+		],
 	},
 	{ timestamps: true }
 )
